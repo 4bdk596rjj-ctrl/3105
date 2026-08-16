@@ -619,7 +619,6 @@ enum ContainerStore {
         }
         var entries: [FileEntry] = []
         for item in items {
-            if item.hasPrefix(".") { continue }
             let full = (path as NSString).appendingPathComponent(item)
             var isDir: ObjCBool = false
             guard fm.fileExists(atPath: full, isDirectory: &isDir) else { continue }
