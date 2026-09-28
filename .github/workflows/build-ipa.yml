@@ -7,13 +7,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build IPA File
         run: |
-          ls -R
-          xcodebuild -project ThreeOneOSFive.xcodeproj -list
-          xcodebuild -project ThreeOneOSFive.xcodeproj -alltargets -sdk iphoneos -configuration Release CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -derivedDataPath build
+          xcodebuild -project ThreeOneOSFive.xcodeproj -scheme 3105 -sdk iphoneos -configuration Release CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -derivedDataPath build
           find build -name "*.app"
           mkdir -p Payload
           APP=$(find build -name "*.app" | head -1)
-          echo "Found app: $APP"
           cp -R "$APP" Payload/
           zip -r OGIOS-file.ipa Payload
       - uses: actions/upload-artifact@v4
