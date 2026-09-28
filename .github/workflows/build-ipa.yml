@@ -5,15 +5,15 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build IPA File
+      - name: Build IPA
         run: |
-          xcodebuild -project ThreeOneOSFive.xcodeproj -scheme 3105 -sdk iphoneos -configuration Release CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -derivedDataPath build
-          find build -name "*.app"
+          xcodebuild -project ThreeOneOSFive.xcodeproj -scheme OGIOS -sdk iphoneos -configuration Release CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -derivedDataPath build
           mkdir -p Payload
           APP=$(find build -name "*.app" | head -1)
+          echo "App found: $APP"
           cp -R "$APP" Payload/
-          zip -r OGIOS-file.ipa Payload
+          zip -r OGIOS-File.ipa Payload
       - uses: actions/upload-artifact@v4
         with:
-          name: OGIOS-file-ipa
-          path: OGIOS-file.ipa
+          name: OGIOS-File-ipa
+          path: OGIOS-File.ipa
