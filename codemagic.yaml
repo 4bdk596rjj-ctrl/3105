@@ -7,11 +7,12 @@ workflows:
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Build IPA
+      - name: Build without scheme
         script: |
-          xcodebuild -project ThreeOneOSFive.xcodeproj -scheme ThreeOneOSFive -configuration Release -sdk iphoneos -archivePath build/ThreeOneOSFive.xcarchive archive CODE_SIGNING_ALLOWED=NO
-          mkdir -p build/ipa/Payload
-          cp -r build/ThreeOneOSFive.xcarchive/Products/Applications/*.app build/ipa/Payload/
-          cd build/ipa && zip -r ../../ThreeOneOSFive-unsigned.ipa Payload
+          xcodebuild -project ThreeOneOSFive.xcodeproj -sdk iphoneos -configuration Release -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" -arch arm64 build
+          mkdir -p Payload
+          cp -r build/Build/Products/Release-iphoneos/*.app Payload/
+          ls -lh Payload/
+          zip -r ThreeOneOSFive-unsigned.ipa Payload
     artifacts:
       - ./*.ipa
