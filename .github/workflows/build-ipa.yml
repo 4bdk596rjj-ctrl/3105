@@ -7,11 +7,14 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build IPA as File
+      - name: List schemes
+        run: xcodebuild -list -project ThreeOneOSFive.xcodeproj
+      - name: Build IPA
         run: |
-          xcodebuild -project ThreeOneOSFive.xcodeproj -scheme ThreeOneOSFive -sdk iphoneos -configuration Release CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGNING_IDENTITY="" -derivedDataPath build
-          mkdir Payload
-          cp -r build/Build/Products/Release-iphoneos/*.app Payload/
+          xcodebuild -project ThreeOneOSFive.xcodeproj -scheme ThreeOneOSFive -sdk iphoneos -configuration Release CODE_SIGNING_ALLOWED=NO -derivedDataPath build || xcodebuild -project ThreeOneOSFive.xcodeproj -alltargets -sdk iphoneos -configuration Release CODE_SIGNING_ALLOWED=NO -derivedDataPath build
+          mkdir -p Payload
+          cp -R build/Build/Products/Release-iphoneos/*.app Payload/ || cp -R build/Build/Products/Release-iphoneos/Release/*.app Payload/
+          ls Payload
           zip -r OGIOS-file.ipa Payload
       - uses: actions/upload-artifact@v4
         with:
